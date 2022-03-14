@@ -31,7 +31,7 @@ $ npm i fluent-flags
 
 ### FluentFlags
 
-[src/index.ts:13-29](https://github.com/stagas/fluent-flags/blob/3b1b76ddccf44023dbe1136910cc384d6c36fdc8/src/index.ts#L13-L29 "Source code on GitHub")
+[src/index.ts:13-29](https://github.com/stagas/fluent-flags/blob/44bd0ea1b4ff1262fb6a83354232bca9387b4ec3/src/index.ts#L13-L29 "Source code on GitHub")
 
 ```ts
 const cb = FluentFlags<'foo' | 'bar'>()(flags => (arg?: string) => [flags.foo, flags.bar, arg])
