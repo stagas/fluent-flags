@@ -8,7 +8,7 @@ const commonjs = fromRollup(rollupCommonjs)
 module.exports = {
   concurrency: 1,
   nodeResolve: true,
-  files: ['test/**/*.spec.{ts,tsx}'],
+  files: ['test/**/*.spec.web.{ts,tsx}'],
   plugins: [vite(), commonjs()],
   reporters: [summaryReporter()],
   coverageConfig: {

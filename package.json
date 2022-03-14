@@ -5,7 +5,6 @@
   "description": "decorates a function with arbitrary fluent boolean flags and passes them as the first parameter",
   "version": "1.0.0",
   "license": "MIT",
-  "private": true,
   "repository": {
     "type": "git",
     "url": "git+https://git@github.com:stagas/fluent-flags.git"
