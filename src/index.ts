@@ -23,7 +23,7 @@ export const FluentFlags = <
   C extends Fn<any, any>,
   T = Partial<Flags<K>>,
 >(
-  _: K,
+  _flagKeys: K,
   cb: (flags: T) => C,
   flags: any = {},
 ) =>
