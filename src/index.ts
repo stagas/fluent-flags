@@ -1,11 +1,17 @@
-export type Flags<T extends string> = { [K in T]: boolean }
-export type Fluent<C, T> = C & { [K in keyof T]: T[K] & Fluent<C, T> }
+export type Key = string
+export type Fn<T extends unknown[], R> = (...args: T) => R
+export type Fluent<C, T> = C & { [K in keyof T]: Fluent<C, T> }
+
+// https://stackoverflow.com/a/67942573
+export type Flags<T extends ReadonlyArray<Key>> = {
+  [K in (T extends ReadonlyArray<infer U> ? U : never)]: boolean
+}
 
 /**
  * Decorates a function with fluent flags that are then passed as an object.
  *
  * ```ts
- * const cb = FluentFlags<'foo' | 'bar'>(flags => (arg?: string) => [flags.foo, flags.bar, arg])
+ * const cb = FluentFlags(['foo', 'bar'] as const, flags => (arg: string) => [flags.foo, flags.bar, arg])
  * expect(cb()).toMatchObject([void 0, void 0, void 0])
  * expect(cb('hello')).toMatchObject([void 0, void 0, 'hello'])
  * expect(cb.bar('hello')).toMatchObject([void 0, true, 'hello'])
@@ -13,20 +19,22 @@ export type Fluent<C, T> = C & { [K in keyof T]: T[K] & Fluent<C, T> }
  * ```
  */
 export const FluentFlags = <
-  T extends string,
-  C extends (...args: any[]) => any = (...args: any[]) => any,
+  K extends readonly Key[],
+  C extends Fn<any, any>,
+  T = Partial<Flags<K>>,
 >(
-  cb: (flags: Partial<Flags<T>>) => C,
-  flags: Partial<Flags<T>> = {},
+  _: K,
+  cb: (flags: T) => C,
+  flags: any = {},
 ) =>
   new Proxy(cb, {
-    get(_, prop: T, receiver) {
+    get(_, prop, receiver) {
       flags[prop] = true
       return receiver
     },
     apply(_, self, args) {
-      const f: Partial<Flags<T>> = { ...flags }
+      const f: T = { ...flags }
       flags = {} // reset for next use
       return cb.call(self, f).apply(self, args)
     },
-  }) as Fluent<C, Flags<T>>
+  }) as Fluent<C, Required<T>>
