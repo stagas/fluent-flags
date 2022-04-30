@@ -7,6 +7,12 @@ export type Flags<T extends ReadonlyArray<Key>> = {
   [K in (T extends ReadonlyArray<infer U> ? U : never)]: boolean
 }
 
+// Credits: systemfault
+export type NarrowHelper<T> =
+  | (T extends readonly [] ? readonly [] : never)
+  | (T extends string | number | bigint | boolean ? T : never)
+  | ({ [K in keyof T]: T[K] extends (...args: any[]) => unknown ? T[K] : NarrowHelper<T[K]> })
+
 /**
  * Decorates a function with fluent flags that are then passed as an object.
  *
@@ -19,11 +25,11 @@ export type Flags<T extends ReadonlyArray<Key>> = {
  * ```
  */
 export const FluentFlags = <
-  K extends readonly Key[],
+  K extends readonly Key[] | readonly [],
   C extends Fn<any, any>,
   T = Partial<Flags<K>>,
 >(
-  _flagKeys: K,
+  _flagKeys: NarrowHelper<K>,
   cb: (flags: T) => C,
   flags: any = {},
 ) =>
