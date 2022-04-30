@@ -25,6 +25,7 @@ describe('cb = FluentFlags([flagA, flagB, ...], cb)', () => {
       const cb = FluentFlags(['foo', 'bar'] as const, flags => () => [flags.foo, flags.bar])
       cb.wrong()
     `)).toContain('Property \'wrong\' does not exist')
+    // cb.wrong('hello')
   })
 
   it('passes arguments', () => {
@@ -37,10 +38,12 @@ describe('cb = FluentFlags([flagA, flagB, ...], cb)', () => {
       const cb = FluentFlags(['foo', 'bar'] as const, flags => (arg: string) => [flags.foo, flags.bar, arg])
       cb(123)
     `)).toContain('Argument of type \'number\' is not assignable to parameter of type \'string\'.')
+    // cb(123)
 
     expect(typeTest(`
       const cb = FluentFlags(['foo', 'bar'] as const, flags => (arg: string) => [flags.foo, flags.bar, arg])
       cb.wrong('hello')
     `)).toContain('Property \'wrong\' does not exist')
+    // cb.wrong('hello')
   })
 })
