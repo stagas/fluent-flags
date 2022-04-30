@@ -22,7 +22,7 @@ describe('cb = FluentFlags([flagA, flagB, ...], cb)', () => {
     expect(cb.foo.bar()).toMatchObject([true, true])
     expect(cb.bar()).toMatchObject([void 0, true])
     expect(typeTest(`
-      const cb = FluentFlags(['foo', 'bar'] as const, flags => () => [flags.foo, flags.bar])
+      const cb = FluentFlags(['foo', 'bar'], flags => () => [flags.foo, flags.bar])
       cb.wrong()
     `)).toContain('Property \'wrong\' does not exist')
     // cb.wrong('hello')
@@ -35,13 +35,13 @@ describe('cb = FluentFlags([flagA, flagB, ...], cb)', () => {
     expect(cb.foo.bar('hello')).toMatchObject([true, true, 'hello'])
 
     expect(typeTest(`
-      const cb = FluentFlags(['foo', 'bar'] as const, flags => (arg: string) => [flags.foo, flags.bar, arg])
+      const cb = FluentFlags(['foo', 'bar'], flags => (arg: string) => [flags.foo, flags.bar, arg])
       cb(123)
     `)).toContain('Argument of type \'number\' is not assignable to parameter of type \'string\'.')
     // cb(123)
 
     expect(typeTest(`
-      const cb = FluentFlags(['foo', 'bar'] as const, flags => (arg: string) => [flags.foo, flags.bar, arg])
+      const cb = FluentFlags(['foo', 'bar'], flags => (arg: string) => [flags.foo, flags.bar, arg])
       cb.wrong('hello')
     `)).toContain('Property \'wrong\' does not exist')
     // cb.wrong('hello')
