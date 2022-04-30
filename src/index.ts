@@ -17,7 +17,7 @@ export type NarrowHelper<T> =
  * Decorates a function with fluent flags that are then passed as an object.
  *
  * ```ts
- * const cb = FluentFlags(['foo', 'bar'] as const, flags => (arg: string) => [flags.foo, flags.bar, arg])
+ * const cb = FluentFlags(['foo', 'bar'], flags => (arg: string) => [flags.foo, flags.bar, arg])
  * expect(cb()).toMatchObject([void 0, void 0, void 0])
  * expect(cb('hello')).toMatchObject([void 0, void 0, 'hello'])
  * expect(cb.bar('hello')).toMatchObject([void 0, true, 'hello'])

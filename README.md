@@ -22,7 +22,7 @@ Decorates a function with arbitrary fluent boolean flags and passes them as the 
 
 ```ts
 const cb = FluentFlags(
-  ['foo', 'bar'] as const,
+  ['foo', 'bar'],
   flags => (arg: string) => [flags.foo, flags.bar, arg]
 )
 expect(cb()).toMatchObject([void 0, void 0, void 0])
